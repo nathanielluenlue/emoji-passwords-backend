@@ -48,26 +48,26 @@ async function updateTimeTakenToLogIn(accountId) {
   return rows[0];
 };
 
-async function updatePassword(accountId) {
+async function updatePassword(newPassword) {
   const { rows } = await pool.query(
     `
-    SELECT id, device_id, username, created_at 
-    FROM accounts 
-    WHERE id=$1
+    INSERT INTO users (password)
+    VALUES ($1)
+    RETURNING *;
     `,
-    [accountId]
+    [newPassword]
   );
   return rows[0];
 };
 
-async function updateUsername(accountId) {
+async function updateUsername(newUsername) {
   const { rows } = await pool.query(
     `
-    INSERT id, device_id, username, created_at 
-    FROM accounts 
-    WHERE id=$1
+    INSERT INTO users (username)
+    VALUES ($1)
+    RETURNING *;
     `,
-    [accountId]
+    [newUsername]
   );
   return rows[0];
 };
