@@ -49,8 +49,8 @@ async function updatePassword(req, res) {
 async function updateUsername(req, res) {
   try {
     console.log("update username");
-    console.log(res.body);
-    const account = await service.updateUsername();
+    const { username }= res.body
+    const account = await service.updateUsername(username);
     res.json(account);
   } catch (err) {
     res.status(500).json({ error: err });
