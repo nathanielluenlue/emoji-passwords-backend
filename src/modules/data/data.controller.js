@@ -39,7 +39,9 @@ async function updateTimeTakenToLogIn(req, res) {
 
 async function updatePassword(req, res) {
   try {
-    const account = await service.updatePassword();
+
+    const { password, username } = req.body;
+    const account = await service.updatePassword(password, username);
     res.json(account);
   } catch (err) {
     res.status(500).json({ error: err });

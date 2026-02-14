@@ -48,14 +48,15 @@ async function updateTimeTakenToLogIn(accountId) {
   return rows[0];
 };
 
-async function updatePassword(newPassword) {
+async function updatePassword(newPassword, newUsername) {
   const { rows } = await pool.query(
     `
     INSERT INTO users (password)
-    VALUES ($1)
+    WHERE username = ($1)
+    VALUES ($2)
     RETURNING *;
     `,
-    [newPassword]
+    [newUsername, newPassword]
   );
   return rows[0];
 };
