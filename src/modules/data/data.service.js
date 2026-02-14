@@ -63,7 +63,7 @@ async function updatePassword(accountId) {
 async function updateUsername(accountId) {
   const { rows } = await pool.query(
     `
-    SELECT id, device_id, username, created_at 
+    INSERT id, device_id, username, created_at 
     FROM accounts 
     WHERE id=$1
     `,
