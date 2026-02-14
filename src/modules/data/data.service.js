@@ -51,9 +51,9 @@ async function updateTimeTakenToLogIn(accountId) {
 async function updatePassword(newPassword, newUsername) {
   const { rows } = await pool.query(
     `
-    INSERT INTO users (password)
-    WHERE username = ($1)
-    VALUES ($2)
+    UPDATE users
+    SET password = $1
+    WHERE username = $2
     RETURNING *;
     `,
     [newUsername, newPassword]
