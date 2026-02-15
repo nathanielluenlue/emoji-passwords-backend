@@ -72,7 +72,6 @@ async function updateUsername(newUsername) {
 
 module.exports = {
     checkPassword ,
-    updateNumberOfLogInAttempts,
     updatePassword,
     updateUsername
 };

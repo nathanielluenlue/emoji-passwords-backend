@@ -49,7 +49,6 @@ async function updateUsername(req, res) {
 
 module.exports = {
     checkPassword,
-    updateNumberOfLogInAttempts,
     updatePassword,
     updateUsername
 };
