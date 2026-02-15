@@ -17,10 +17,10 @@ async function checkPassword(username, password) {
   await pool.query(
     `
     UPDATE user
-    SET number_of_log_in_attempts = COALESCE(number_of_log_in_attempts, 0) + 1
+    SET number_of_log_in_attempts = number_of_log_in_attempts + 1
     WHERE username = $1
     `,
-    [accountId]
+    [username]
   );
 
   const user = rows[0];
