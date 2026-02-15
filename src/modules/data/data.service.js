@@ -12,29 +12,54 @@ async function updateTimeToCreatePassword(accountId) {
   return rows[0];
 };
 
-async function getPassword(accountId) {
+async function checkPassword(username, password) {
+  if (!username || !password) {
+    throw new Error("Username and password are required");
+  }
+
   const { rows } = await pool.query(
     `
-    SELECT id, device_id, username, created_at 
-    FROM accounts 
-    WHERE id=$1
+    SELECT id, device_id, username, password, created_at
+    FROM users
+    WHERE username = $1
     `,
-    [accountId]
+    [username]
   );
-  return rows[0];
-};
+
+  const user = rows[0];
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  if (user.password !== password) {
+    throw new Error("Incorrect password");
+  }
+
+  return user;
+}
 
 async function updateNumberOfLogInAttempts(accountId) {
+  if (!accountId) {
+    throw new Error("accountId is required");
+  }
+
   const { rows } = await pool.query(
     `
-    SELECT id, device_id, username, created_at 
-    FROM accounts 
-    WHERE id=$1
+    UPDATE accounts
+    SET number_of_log_in_attempts = COALESCE(number_of_log_in_attempts, 0) + 1
+    WHERE id = $1
+    RETURNING id, device_id, username, number_of_log_in_attempts, created_at;
     `,
     [accountId]
   );
+
+  if (!rows.length) {
+    throw new Error("User not found");
+  }
+
   return rows[0];
-};
+}
 
 async function updateTimeTakenToLogIn(accountId) {
   const { rows } = await pool.query(
@@ -84,7 +109,7 @@ async function updateUsername(newUsername) {
 
 module.exports = {
     updateTimeToCreatePassword,
-    getPassword,
+    checkPassword ,
     updateNumberOfLogInAttempts,
     updateTimeTakenToLogIn,
     updatePassword,

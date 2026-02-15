@@ -10,9 +10,10 @@ async function updateTimeToCreatePassword(req, res) {
   }
 };
 
-async function getPassword(req, res) {
+async function checkPassword(req, res) {
   try {
-    const account = await service.getPassword();
+    const { username, password } = req.body;
+    const account = await service.checkPassword(username, password);
     res.json(account);
   } catch (err) {
     res.status(500).json({ error: err });
@@ -62,8 +63,6 @@ async function updatePassword(req, res) {
   }
 }
 
-
-
 async function updateUsername(req, res) {
   try {
     console.log("update username");
@@ -77,7 +76,7 @@ async function updateUsername(req, res) {
 
 module.exports = {
     updateTimeToCreatePassword,
-    getPassword,
+    checkPassword,
     updateNumberOfLogInAttempts,
     updateTimeTakenToLogIn,
     updatePassword,
