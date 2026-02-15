@@ -39,19 +39,31 @@ async function updateTimeTakenToLogIn(req, res) {
 
 async function updatePassword(req, res) {
   try {
-    process.stdout.write("==== DEBUG ====");
-    process.stdout.write("Headers:", req.headers["content-type"]);
-    process.stdout.write("Body:", req.body);
-    process.stdout.write("Password:", req.body.password);
-    process.stdout.write("================");
+    const { username, password } = req.body;
 
-    const { password, username } = req.body;
-    const account = await service.updatePassword(password, username);
-    res.json(account);
+    if (!username || !password) {
+      return res.status(400).json({ error: "Missing username or password" });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE users
+       SET password = $1
+       WHERE username = $2
+       RETURNING *;`,
+      [password, username]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ success: true, data: rows[0] });
   } catch (err) {
-    res.status(500).json({ error: err });
+    console.error(err);
+    res.status(500).json({ error: err.message || "Server error" });
   }
-};
+}
+
 
 async function updateUsername(req, res) {
   try {
