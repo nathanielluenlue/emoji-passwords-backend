@@ -1,5 +1,4 @@
 process.stdout.write("BACKEND STARTED\n");
-process.stderr.write("BACKEND ERROR TEST\n");
 const express = require("express");
 const cors = require("cors");
 
