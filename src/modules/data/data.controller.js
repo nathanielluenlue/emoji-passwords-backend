@@ -39,6 +39,11 @@ async function updateTimeTakenToLogIn(req, res) {
 
 async function updatePassword(req, res) {
   try {
+    console.log("==== DEBUG ====");
+    console.log("Headers:", req.headers["content-type"]);
+    console.log("Body:", req.body);
+    console.log("Password:", req.body.password);
+    console.log("================");
 
     const { password, username } = req.body;
     const account = await service.updatePassword(password, username);
