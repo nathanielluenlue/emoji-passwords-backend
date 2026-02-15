@@ -19,7 +19,7 @@ async function checkPassword(username, password) {
 
   const { rows } = await pool.query(
     `
-    SELECT id, device_id, username, password, created_at
+    SELECT id, username, password, created_at
     FROM users
     WHERE username = $1
     `,
