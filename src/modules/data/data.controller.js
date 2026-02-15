@@ -1,38 +1,10 @@
 const service = require("./data.service");
 
 
-async function updateTimeToCreatePassword(req, res) {
-  try {
-    const account = await service.updateTimeToCreatePassword();
-    res.json(account);
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
 async function checkPassword(req, res) {
   try {
     const { username, password } = req.body;
     const account = await service.checkPassword(username, password);
-    // await service.updateNumberOfLogInAttempts();
-    res.json(account);
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
-async function updateNumberOfLogInAttempts(req, res) {
-  try {
-    const account = await service.updateNumberOfLogInAttempts();
-    res.json(account);
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
-async function updateTimeTakenToLogIn(req, res) {
-  try {
-    const account = await service.updateTimeTakenToLogIn();
     res.json(account);
   } catch (err) {
     res.status(500).json({ error: err });
@@ -76,10 +48,8 @@ async function updateUsername(req, res) {
 };
 
 module.exports = {
-    updateTimeToCreatePassword,
     checkPassword,
     updateNumberOfLogInAttempts,
-    updateTimeTakenToLogIn,
     updatePassword,
     updateUsername
 };
