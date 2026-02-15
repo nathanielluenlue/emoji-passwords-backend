@@ -16,7 +16,7 @@ async function checkPassword(username, password) {
 
   await pool.query(
     `
-    UPDATE user
+    UPDATE users
     SET number_of_log_in_attempts = number_of_log_in_attempts + 1
     WHERE username = $1
     `,
