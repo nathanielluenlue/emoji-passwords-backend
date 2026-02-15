@@ -14,7 +14,7 @@ async function checkPassword(req, res) {
   try {
     const { username, password } = req.body;
     const account = await service.checkPassword(username, password);
-    await service.updateNumberOfLogInAttempts();
+    // await service.updateNumberOfLogInAttempts();
     res.json(account);
   } catch (err) {
     res.status(500).json({ error: err });
