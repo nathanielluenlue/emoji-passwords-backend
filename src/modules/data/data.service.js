@@ -48,14 +48,27 @@ async function updateTimeTakenToLogIn(accountId) {
   return rows[0];
 };
 
-async function updatePassword(newPassword, newUsername) {
+async function updatePassword(username, password) {
+  if (!username || !password) {
+    throw new Error("Missing username or password");
+  }
+
   const { rows } = await pool.query(
     `
-    INSERT INTO users (username, password) VALUES ('aliceagagagaaa', '🐶😂❤️');
-    `
+    UPDATE users
+    SET password = $1
+    WHERE username = $2
+    RETURNING *;
+    `,
+    [password, username]
   );
-  return rows[0];
-};
+
+  if (!rows.length) {
+    throw new Error("User not found");
+  }
+
+  return rows[0]; 
+}
 
 async function updateUsername(newUsername) {
   const { rows } = await pool.query(
